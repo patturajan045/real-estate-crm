@@ -5,11 +5,9 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Config:
-    SECRET_KEY = os.environ.get("SECRET_KEY", "dev_secret_key_estateflow_crm_super_secure_key_2026")
-    JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY", "super_secret_jwt_key_estateflow_crm_2026_secure_32bytes!")
-
-    # Local MongoDB connection string
-    MONGO_URI = os.environ.get(
-        "MONGO_URI",
-        "mongodb://localhost:27017/real_estate_crm"
-    )
+    # Safely fall back to a local dev string or None if the env var is missing
+    SECRET_KEY = os.environ.get("SECRET_KEY", "dev-secret-key-do-not-use-in-prod")
+    JWT_SECRET_KEY = os.environ.get("JWT_SECRET_KEY", "dev-jwt-secret-do-not-use-in-prod")
+    
+    # Do not hardcode the Atlas password here
+    MONGO_URI = os.environ.get("MONGO_URI", "mongodb://localhost:27017/local_db")
