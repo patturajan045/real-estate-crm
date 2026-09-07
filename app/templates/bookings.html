@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+
+{% block title %}Bookings Management{% endblock %}
+{% block page_title %}<span data-cms="bookings_title">Bookings Management</span>{% endblock %}
+{% block page_subtitle %}<span data-cms="bookings_subtitle">Connect customer leads with property units and process reservation agreements</span>{% endblock %}
+
+{% block content %}
+<!-- Action Bar -->
+<div class="crm-card mb-4">
+  <div class="crm-card-body p-3">
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+      <!-- Status Filters -->
+      <div class="d-flex align-items-center gap-2">
+        <span class="small text-secondary fw-semibold">Status:</span>
+        <div class="btn-group btn-group-sm" id="bookingStatusGroup">
+          <button class="btn btn-primary booking-filter-btn" data-status="All">All</button>
+          <button class="btn btn-outline-secondary booking-filter-btn" data-status="Confirmed">Confirmed</button>
+          <button class="btn btn-outline-secondary booking-filter-btn" data-status="Cancelled">Cancelled</button>
+        </div>
+      </div>
+
+      <!-- New Booking Trigger -->
+      <button class="btn btn-primary d-flex align-items-center gap-2" onclick="openNewBookingModal()">
+        <i class="fas fa-file-contract"></i>
+        <span>Create New Booking</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Bookings DataTable Card -->
+<div class="crm-card">
+  <div class="crm-card-body">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle w-100" id="bookingsTable">
+        <thead>
+          <tr>
+            <th>Booking #</th>
+            <th>Customer</th>
+            <th>Property Unit</th>
+            <th>Agreement Value</th>
+            <th>Advance Paid</th>
+            <th>Payment Method</th>
+            <th>Status</th>
+            <th>Booking Date</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block modals %}
+<!-- New Booking Modal -->
+<div class="modal fade" id="newBookingModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold"><i class="fas fa-file-contract text-primary me-2"></i>Create Property Booking</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form id="newBookingForm" onsubmit="handleCreateBooking(event)">
+        <div class="modal-body">
+          <div class="alert alert-info py-2 px-3 small d-flex align-items-center gap-2 mb-3">
+            <i class="fas fa-shield-alt fs-5 text-info"></i>
+            <div data-cms="bookings_protection_notice"><strong>Double Booking Protection:</strong> Unit availability is atomically secured. If another agent reserves the same unit concurrently, your agreement will be safely protected from collision.</div>
+          </div>
+
+          <div class="row g-3">
+            <!-- Step 1: Select Customer Lead -->
+            <div class="col-12">
+              <label class="form-label fw-semibold text-dark">1. Select Customer Lead *</label>
+              <select class="form-select" name="lead" id="bookingLeadSelect" required>
+                <option value="">-- Choose Lead --</option>
+              </select>
+              <div class="form-text">Choose the prospective lead that will be associated with this booking.</div>
+            </div>
+
+            <div class="col-12"><hr class="my-1 text-muted"></div>
+
+            <!-- Step 2: Select Property & Unit -->
+            <div class="col-md-4">
+              <label class="form-label fw-semibold text-dark">2. Project *</label>
+              <select class="form-select" id="bookingProjectSelect" required onchange="onBookingProjectChange(this.value)">
+                <option value="">-- Choose Project --</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label fw-semibold text-dark">Building *</label>
+              <select class="form-select" id="bookingBuildingSelect" required onchange="onBookingBuildingChange(this.value)">
+                <option value="">-- Choose Building --</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label fw-semibold text-dark">Available Unit *</label>
+              <select class="form-select" name="unit" id="bookingUnitSelect" required onchange="onBookingUnitChange(this.value)">
+                <option value="">-- Choose Available Unit --</option>
+              </select>
+            </div>
+
+            <div class="col-12"><hr class="my-1 text-muted"></div>
+
+            <!-- Step 3: Financials & Payment -->
+            <div class="col-md-6">
+              <label class="form-label fw-semibold text-dark">3. Total Agreement Value ($) *</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+                <input type="number" step="1000" class="form-control" name="agreementValue" id="bookingAgreementValue" required>
+              </div>
+              <div class="form-text">Auto-filled from unit list price; can be adjusted for agreed discounts.</div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-semibold text-dark">Booking Advance Amount ($) *</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-hand-holding-usd"></i></span>
+                <input type="number" step="500" class="form-control" name="bookingAmount" required>
+              </div>
+              <div class="form-text">Initial deposit paid to confirm agreement.</div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label">Payment Method</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-credit-card"></i></span>
+                <select class="form-select" name="paymentMethod">
+                  <option value="Wire Transfer" selected>Wire Transfer / RTGS</option>
+                  <option value="Cheque">Cheque</option>
+                  <option value="Credit Card">Credit Card</option>
+                  <option value="Cash / Demand Draft">Cash / Demand Draft</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Transaction / Cheque Reference</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-receipt"></i></span>
+                <input type="text" class="form-control" name="transactionReference">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-success" id="btnSubmitBooking">
+            <i class="fas fa-check-circle me-1"></i> Confirm & Reserve Unit
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Booking Details Modal -->
+<div class="modal fade" id="bookingDetailsModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold"><i class="fas fa-receipt text-primary me-2"></i>Booking Agreement</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="bookingDetailsContent">
+        <div class="text-center py-4"><div class="spinner-border spinner-border-sm text-primary"></div></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Dedicated external script for bookings (No inline JS) -->
+<script src="/static/js/bookings.js"></script>
+{% endblock %}

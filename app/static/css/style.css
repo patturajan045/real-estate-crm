@@ -1,0 +1,987 @@
+/* ==========================================================================
+   Real Estate CRM - Professional Light Theme CSS
+   ========================================================================== */
+
+:root {
+  --crm-bg: #f8fafc;
+  --crm-card-bg: #ffffff;
+  --crm-sidebar-bg: #ffffff;
+  --crm-text-primary: #0f172a;
+  --crm-text-secondary: #64748b;
+  --crm-text-muted: #94a3b8;
+  --crm-border: #e2e8f0;
+  --crm-border-light: #f1f5f9;
+
+  --crm-primary: #2563eb;
+  --crm-primary-hover: #1d4ed8;
+  --crm-primary-light: #eff6ff;
+
+  --crm-success: #059669;
+  --crm-success-light: #ecfdf5;
+  --crm-warning: #d97706;
+  --crm-warning-light: #fffbeb;
+  --crm-danger: #dc2626;
+  --crm-danger-light: #fef2f2;
+  --crm-info: #0284c7;
+  --crm-info-light: #f0f9ff;
+
+  --crm-radius: 0.75rem;
+  --crm-radius-sm: 0.5rem;
+  --crm-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --crm-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --crm-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--crm-bg);
+  color: var(--crm-text-primary);
+  min-height: 100vh;
+  margin: 0;
+  display: flex;
+  overflow-x: hidden;
+}
+
+/* ==========================================================================
+   Layout: Sidebar & Main Wrapper
+   ========================================================================== */
+
+.crm-wrapper {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.crm-sidebar {
+  width: 250px;
+  background-color: var(--crm-sidebar-bg);
+  border-right: 1px solid var(--crm-border);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1040;
+  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.crm-main {
+  flex: 1;
+  margin-left: 250px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--crm-bg);
+  transition: margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Collapsed Sidebar Mode (Responsive Icon-Only Navigation) */
+.sidebar-collapsed .crm-sidebar {
+  width: 72px;
+}
+
+.sidebar-collapsed .crm-main {
+  margin-left: 72px;
+}
+
+.sidebar-collapsed .sidebar-brand {
+  padding: 0;
+  justify-content: center;
+}
+
+.sidebar-collapsed .sidebar-brand .sidebar-brand-icon,
+.sidebar-collapsed .sidebar-brand .brand-text-block,
+.sidebar-collapsed .menu-header,
+.sidebar-collapsed .nav-link-crm span,
+.sidebar-collapsed .user-profile-badge > div:not(.user-avatar),
+.sidebar-collapsed .user-profile-badge button {
+  display: none !important;
+}
+
+.sidebar-collapsed .sidebar-brand .btn-sidebar-toggle {
+  margin: 0 auto;
+}
+
+.sidebar-collapsed .nav-link-crm {
+  justify-content: center;
+  padding: 0.85rem 0;
+  margin-bottom: 0.25rem;
+}
+
+.sidebar-collapsed .nav-link-crm i {
+  margin: 0 !important;
+  font-size: 1.2rem;
+}
+
+.sidebar-collapsed .sidebar-footer {
+  padding: 0.75rem 0.5rem;
+}
+
+.sidebar-collapsed .user-profile-badge {
+  justify-content: center;
+  padding: 0.5rem;
+}
+
+@media (max-width: 991.98px) {
+  .crm-sidebar {
+    width: 250px !important;
+    transform: translateX(-100%);
+  }
+  .crm-sidebar.show {
+    transform: translateX(0);
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.15);
+  }
+  .crm-main {
+    margin-left: 0 !important;
+  }
+}
+
+/* Sidebar Brand & Left-aligned Toggle */
+.sidebar-brand {
+  height: 70px;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  border-bottom: 1px solid var(--crm-border);
+  gap: 0.65rem;
+  position: relative;
+}
+
+.btn-sidebar-toggle {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--crm-radius-sm);
+  background-color: transparent;
+  border: 1px solid var(--crm-border);
+  color: var(--crm-text-secondary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.btn-sidebar-toggle:hover {
+  background-color: #f1f5f9;
+  color: var(--crm-primary);
+  border-color: var(--crm-primary);
+}
+
+.sidebar-brand-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  box-shadow: 0 3px 8px rgba(37, 99, 235, 0.25);
+  flex-shrink: 0;
+}
+
+.brand-text-block {
+  overflow: hidden;
+  line-height: 1.2;
+}
+
+.sidebar-brand-title {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--crm-text-primary);
+  margin: 0;
+  white-space: nowrap;
+}
+
+.sidebar-brand-subtitle {
+  font-size: 0.72rem;
+  color: var(--crm-text-secondary);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Sidebar Nav */
+.sidebar-menu {
+  padding: 1.25rem 0.75rem;
+  flex: 1;
+  overflow-y: auto;
+  list-style: none;
+  margin: 0;
+}
+
+.menu-header {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--crm-text-muted);
+  padding: 0.75rem 0.75rem 0.25rem;
+}
+
+.nav-item {
+  margin-bottom: 0.25rem;
+}
+
+.nav-link-crm {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.7rem 0.85rem;
+  color: var(--crm-text-secondary);
+  border-radius: var(--crm-radius-sm);
+  font-weight: 500;
+  font-size: 0.92rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.nav-link-crm i {
+  font-size: 1.1rem;
+  width: 20px;
+  text-align: center;
+}
+
+.nav-link-crm:hover {
+  color: var(--crm-primary);
+  background-color: var(--crm-primary-light);
+}
+
+.nav-link-crm.active {
+  color: var(--crm-primary);
+  background-color: var(--crm-primary-light);
+  font-weight: 600;
+}
+
+/* Sidebar Footer / User Profile */
+.sidebar-footer {
+  padding: 1rem 1.25rem;
+  border-top: 1px solid var(--crm-border);
+  background-color: #fafbfc;
+}
+
+.user-profile-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.user-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: #e2e8f0;
+  color: var(--crm-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+/* ==========================================================================
+   Header Navbar
+   ========================================================================== */
+
+.crm-header {
+  height: 70px;
+  background-color: var(--crm-card-bg);
+  border-bottom: 1px solid var(--crm-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+}
+
+.header-title-box h1 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--crm-text-primary);
+}
+
+.header-title-box p {
+  font-size: 0.8rem;
+  color: var(--crm-text-secondary);
+  margin: 0;
+}
+
+/* Content Area */
+.crm-content {
+  padding: 2rem;
+  flex: 1;
+}
+
+/* ==========================================================================
+   Cards & Widgets
+   ========================================================================== */
+
+.crm-card {
+  background-color: var(--crm-card-bg);
+  border: 1px solid var(--crm-border);
+  border-radius: var(--crm-radius);
+  box-shadow: var(--crm-shadow-sm);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  margin-bottom: 1.5rem;
+}
+
+.crm-card:hover {
+  box-shadow: var(--crm-shadow);
+}
+
+.crm-card-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--crm-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: transparent;
+}
+
+.crm-card-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--crm-text-primary);
+}
+
+.crm-card-body {
+  padding: 1.5rem;
+}
+
+/* Stat KPI Cards */
+.stat-card {
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: var(--crm-radius);
+  border: 1px solid var(--crm-border);
+  background: #ffffff;
+  box-shadow: var(--crm-shadow-sm);
+}
+
+.stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+}
+
+.stat-icon.primary {
+  background-color: var(--crm-primary-light);
+  color: var(--crm-primary);
+}
+
+.stat-icon.success {
+  background-color: var(--crm-success-light);
+  color: var(--crm-success);
+}
+
+.stat-icon.warning {
+  background-color: var(--crm-warning-light);
+  color: var(--crm-warning);
+}
+
+.stat-icon.danger {
+  background-color: var(--crm-danger-light);
+  color: var(--crm-danger);
+}
+
+.stat-icon.info {
+  background-color: var(--crm-info-light);
+  color: var(--crm-info);
+}
+
+.stat-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--crm-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.25rem;
+}
+
+.stat-value {
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: var(--crm-text-primary);
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* ==========================================================================
+   Badges (Stages & Unit Statuses)
+   ========================================================================== */
+
+.badge-crm {
+  padding: 0.35rem 0.65rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  line-height: 1.2;
+}
+
+/* Lead Stages */
+.stage-new {
+  background-color: #e0f2fe;
+  color: #0284c7;
+  border: 1px solid #bae6fd;
+}
+
+.stage-contacted {
+  background-color: #f3e8ff;
+  color: #7e22ce;
+  border: 1px solid #e9d5ff;
+}
+
+.stage-site-visit {
+  background-color: #cffafe;
+  color: #0891b2;
+  border: 1px solid #a5f3fc;
+}
+
+.stage-interested {
+  background-color: #fef3c7;
+  color: #b45309;
+  border: 1px solid #fde68a;
+}
+
+.stage-negotiation {
+  background-color: #ffedd5;
+  color: #c2410c;
+  border: 1px solid #fed7aa;
+}
+
+.stage-booked {
+  background-color: #dcfce7;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+.stage-lost {
+  background-color: #f1f5f9;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+}
+
+/* Unit Status */
+.unit-available {
+  background-color: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+
+.unit-blocked {
+  background-color: #fffbeb;
+  color: #b45309;
+  border: 1px solid #fde68a;
+}
+
+.unit-booked {
+  background-color: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.unit-sold {
+  background-color: #f8fafc;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+}
+
+/* Roles */
+.role-super-admin {
+  background-color: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+}
+
+.role-admin {
+  background-color: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+}
+
+.role-sales {
+  background-color: #f0fdf4;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+/* ==========================================================================
+   DataTables Customization (Bootstrap 5 Clean Light)
+   ========================================================================== */
+
+table.dataTable {
+  border-collapse: separate !important;
+  border-spacing: 0;
+  width: 100% !important;
+  margin-top: 0.5rem !important;
+  margin-bottom: 0.75rem !important;
+}
+
+table.dataTable thead th {
+  background-color: #f8fafc !important;
+  color: #475569 !important;
+  font-weight: 600 !important;
+  font-size: 0.8rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.04em !important;
+  border-bottom: 1px solid var(--crm-border) !important;
+  border-top: none !important;
+  padding: 0.85rem 1rem !important;
+}
+
+table.dataTable tbody td {
+  padding: 0.9rem 1rem !important;
+  vertical-align: middle !important;
+  border-bottom: 1px solid #f1f5f9 !important;
+  font-size: 0.88rem !important;
+  color: var(--crm-text-primary) !important;
+}
+
+table.dataTable tbody tr:hover td {
+  background-color: #f8fafc !important;
+}
+
+.dataTables_wrapper .dataTables_length select,
+.dataTables_wrapper .dataTables_filter input {
+  border: 1px solid var(--crm-border) !important;
+  border-radius: var(--crm-radius-sm) !important;
+  padding: 0.35rem 0.65rem !important;
+  font-size: 0.85rem !important;
+}
+
+.dataTables_wrapper .dataTables_filter input:focus {
+  border-color: var(--crm-primary) !important;
+  outline: 0 !important;
+  box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.15) !important;
+}
+
+.page-item.active .page-link {
+  background-color: var(--crm-primary) !important;
+  border-color: var(--crm-primary) !important;
+}
+
+/* ==========================================================================
+   Buttons & Inputs
+   ========================================================================== */
+
+.btn {
+  border-radius: var(--crm-radius-sm);
+  font-weight: 500;
+  font-size: 0.88rem;
+  padding: 0.45rem 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background-color: var(--crm-primary);
+  border-color: var(--crm-primary);
+}
+
+.btn-primary:hover {
+  background-color: var(--crm-primary-hover);
+  border-color: var(--crm-primary-hover);
+}
+
+.form-control, .form-select {
+  border-radius: var(--crm-radius-sm);
+  border: 1px solid var(--crm-border);
+  font-size: 0.9rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--crm-primary);
+  box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.12);
+}
+
+.form-label {
+  font-weight: 500;
+  font-size: 0.85rem;
+  color: var(--crm-text-secondary);
+  margin-bottom: 0.35rem;
+}
+
+/* Modals */
+.modal-content {
+  border-radius: var(--crm-radius);
+  border: 1px solid var(--crm-border);
+  box-shadow: var(--crm-shadow-lg);
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--crm-border);
+  padding: 1.25rem 1.5rem;
+}
+
+.modal-footer {
+  border-top: 1px solid var(--crm-border);
+  padding: 1rem 1.5rem;
+}
+
+/* Notes Timeline */
+.timeline-list {
+  position: relative;
+  padding-left: 1.5rem;
+  list-style: none;
+  margin: 0;
+}
+
+.timeline-list::before {
+  content: '';
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  left: 6px;
+  width: 2px;
+  background-color: var(--crm-border);
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 1.25rem;
+}
+
+.timeline-bullet {
+  position: absolute;
+  left: -1.5rem;
+  top: 4px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: var(--crm-primary);
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 2px var(--crm-primary-light);
+}
+
+.timeline-card {
+  background: #f8fafc;
+  border: 1px solid var(--crm-border);
+  border-radius: var(--crm-radius-sm);
+  padding: 0.75rem 1rem;
+}
+
+/* ==========================================================================
+   jQuery DataTables Professional Light Styling
+   ========================================================================== */
+.dataTables_wrapper {
+  padding: 0.25rem 0;
+}
+
+.dataTables_wrapper .row:first-child {
+  margin-bottom: 0.85rem;
+  align-items: center;
+}
+
+.dataTables_wrapper .row:last-child {
+  margin-top: 0.85rem;
+  align-items: center;
+}
+
+.dataTables_wrapper .dataTables_filter {
+  text-align: right;
+}
+
+.dataTables_wrapper .dataTables_filter label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 500;
+  font-size: 0.85rem;
+  color: var(--crm-text-secondary);
+}
+
+.dataTables_wrapper .dataTables_filter input {
+  border: 1px solid var(--crm-border);
+  border-radius: var(--crm-radius-sm);
+  padding: 0.38rem 0.75rem;
+  font-size: 0.85rem;
+  color: var(--crm-text-primary);
+  background-color: #fff;
+  outline: none;
+  transition: all 0.2s ease-in-out;
+  min-width: 220px;
+}
+
+.dataTables_wrapper .dataTables_filter input:focus {
+  border-color: var(--crm-primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.dataTables_wrapper .dataTables_length label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--crm-text-secondary);
+}
+
+.dataTables_wrapper .dataTables_length select,
+.dataTables_wrapper .dataTables_length select.form-select,
+div.dataTables_wrapper div.dataTables_length select {
+  border: 1px solid var(--crm-border) !important;
+  border-radius: var(--crm-radius-sm) !important;
+  padding: 0.35rem 2.25rem 0.35rem 0.75rem !important;
+  min-width: 85px !important;
+  font-size: 0.85rem !important;
+  color: var(--crm-text-primary) !important;
+  background-color: #fff !important;
+  background-position: right 0.65rem center !important;
+  background-size: 13px 9px !important;
+  display: inline-block !important;
+  box-shadow: none !important;
+  outline: none !important;
+  cursor: pointer;
+}
+
+.dataTables_wrapper .dataTables_info {
+  font-size: 0.825rem;
+  color: var(--crm-text-secondary);
+  padding-top: 0.5rem;
+}
+
+.dataTables_wrapper .dataTables_paginate {
+  text-align: right;
+  padding-top: 0.25rem;
+}
+
+.dataTables_wrapper .dataTables_paginate .pagination {
+  margin: 0;
+  gap: 3px;
+  justify-content: flex-end;
+}
+
+.dataTables_wrapper .dataTables_paginate .page-item .page-link {
+  border-radius: var(--crm-radius-sm);
+  border: 1px solid var(--crm-border);
+  color: var(--crm-text-secondary);
+  font-size: 0.825rem;
+  padding: 0.35rem 0.7rem;
+  background-color: #fff;
+  transition: all 0.15s ease;
+}
+
+.dataTables_wrapper .dataTables_paginate .page-item.active .page-link {
+  background-color: transparent !important;
+  border: 1.5px solid var(--crm-primary) !important;
+  color: var(--crm-primary) !important;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.15);
+}
+
+.dataTables_wrapper .dataTables_paginate .page-item:not(.active):not(.disabled) .page-link:hover {
+  background-color: #f1f5f9;
+  color: var(--crm-primary);
+  border-color: #cbd5e1;
+}
+
+table.dataTable {
+  border-collapse: separate !important;
+  border-spacing: 0;
+  width: 100% !important;
+  margin-top: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+table.dataTable thead th {
+  background-color: #f8fafc;
+  color: var(--crm-text-secondary);
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-top: 1px solid var(--crm-border);
+  border-bottom: 1px solid var(--crm-border);
+  padding: 0.75rem 0.85rem;
+  vertical-align: middle;
+}
+
+table.dataTable tbody td {
+  padding: 0.8rem 0.85rem;
+  vertical-align: middle;
+  border-bottom: 1px solid var(--crm-border-light);
+  font-size: 0.875rem;
+}
+
+table.dataTable tbody tr:hover td {
+  background-color: #f8fafc;
+}
+
+/* Unified Professional Input Groups (No double borders) */
+.input-group > .input-group-text {
+  background-color: #f8fafc;
+  border-color: var(--crm-border);
+  color: var(--crm-text-muted);
+  font-size: 0.875rem;
+  padding: 0.5rem 0.85rem;
+}
+
+.input-group:focus-within > .input-group-text {
+  border-color: var(--crm-primary);
+  color: var(--crm-primary);
+}
+
+.input-group > .form-control:focus {
+  z-index: 3;
+}
+
+/* ==========================================================================
+   Modern Outline Button Aesthetics (Transparent inside, colored border & text)
+   ========================================================================== */
+.btn {
+  font-weight: 500;
+  letter-spacing: 0.015em;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: var(--crm-radius-sm);
+}
+
+.btn-primary,
+.btn-outline-primary {
+  background-color: transparent !important;
+  border: 1.5px solid var(--crm-primary) !important;
+  color: var(--crm-primary) !important;
+  box-shadow: none !important;
+}
+
+.btn-primary:hover,
+.btn-outline-primary:hover,
+.btn-primary:focus,
+.btn-outline-primary:focus {
+  background-color: rgba(37, 99, 235, 0.08) !important;
+  border-color: var(--crm-primary-dark) !important;
+  color: var(--crm-primary-dark) !important;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.18) !important;
+}
+
+.btn-success,
+.btn-outline-success {
+  background-color: transparent !important;
+  border: 1.5px solid var(--crm-success) !important;
+  color: var(--crm-success) !important;
+  box-shadow: none !important;
+}
+
+.btn-success:hover,
+.btn-outline-success:hover,
+.btn-success:focus,
+.btn-outline-success:focus {
+  background-color: rgba(16, 185, 129, 0.08) !important;
+  border-color: #059669 !important;
+  color: #059669 !important;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.18) !important;
+}
+
+.btn-danger,
+.btn-outline-danger {
+  background-color: transparent !important;
+  border: 1.5px solid var(--crm-danger) !important;
+  color: var(--crm-danger) !important;
+  box-shadow: none !important;
+}
+
+.btn-danger:hover,
+.btn-outline-danger:hover,
+.btn-danger:focus,
+.btn-outline-danger:focus {
+  background-color: rgba(239, 68, 68, 0.08) !important;
+  border-color: #dc2626 !important;
+  color: #dc2626 !important;
+  box-shadow: 0 2px 6px rgba(239, 68, 68, 0.18) !important;
+}
+
+.btn-warning,
+.btn-outline-warning {
+  background-color: transparent !important;
+  border: 1.5px solid var(--crm-warning) !important;
+  color: #d97706 !important;
+  box-shadow: none !important;
+}
+
+.btn-warning:hover,
+.btn-outline-warning:hover,
+.btn-warning:focus,
+.btn-outline-warning:focus {
+  background-color: rgba(245, 158, 11, 0.08) !important;
+  border-color: #b45309 !important;
+  color: #b45309 !important;
+}
+
+.btn-info,
+.btn-outline-info {
+  background-color: transparent !important;
+  border: 1.5px solid var(--crm-info) !important;
+  color: #0891b2 !important;
+  box-shadow: none !important;
+}
+
+.btn-info:hover,
+.btn-outline-info:hover {
+  background-color: rgba(6, 182, 212, 0.08) !important;
+  border-color: #0e7490 !important;
+  color: #0e7490 !important;
+}
+
+.btn-secondary,
+.btn-outline-secondary {
+  background-color: transparent !important;
+  border: 1.5px solid var(--crm-border) !important;
+  color: var(--crm-text-secondary) !important;
+  box-shadow: none !important;
+}
+
+.btn-secondary:hover,
+.btn-outline-secondary:hover {
+  background-color: #f1f5f9 !important;
+  border-color: #94a3b8 !important;
+  color: var(--crm-text-primary) !important;
+}
+
+/* Sleek Modern Password Eye Toggle Button */
+.password-eye-btn {
+  background-color: #f8fafc !important;
+  border: 1px solid var(--crm-border) !important;
+  border-left: none !important;
+  color: #64748b !important;
+  padding: 0.5rem 0.85rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-top-right-radius: var(--crm-radius-sm) !important;
+  border-bottom-right-radius: var(--crm-radius-sm) !important;
+}
+
+.password-eye-btn:hover {
+  background-color: #e2e8f0 !important;
+  color: var(--crm-primary) !important;
+  border-color: var(--crm-border) !important;
+}
+
+.password-eye-btn:focus {
+  outline: none;
+  box-shadow: none;
+  border-color: var(--crm-primary) !important;
+  color: var(--crm-primary) !important;
+}
+
+.input-group:focus-within .password-eye-btn {
+  border-color: var(--crm-primary) !important;
+}
+

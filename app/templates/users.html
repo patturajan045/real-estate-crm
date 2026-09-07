@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% block title %}Team & Users Management{% endblock %}
+{% block page_title %}<span data-cms="users_title">Team & User Management</span>{% endblock %}
+{% block page_subtitle %}<span data-cms="users_subtitle">Manage employee accounts, permissions, and roles (Super Admin, Admin, Sales Employee)</span>{% endblock %}
+
+{% block content %}
+<!-- Header Bar -->
+<div class="crm-card mb-4">
+  <div class="crm-card-body p-3">
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+      <div class="d-flex align-items-center gap-2 text-secondary small">
+        <i class="fas fa-shield-alt text-primary fs-5"></i>
+        <span data-cms="users_role_policy_notice">Role-Based Access Control: Super Admin has full authority, Admin manages team & inventory, Sales Employees manage leads & bookings.</span>
+      </div>
+      <button class="btn btn-primary d-flex align-items-center gap-2" onclick="openAddUserModal()">
+        <i class="fas fa-user-plus"></i>
+        <span>Add New User</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Users DataTable Card -->
+<div class="crm-card">
+  <div class="crm-card-body">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle w-100" id="usersTable">
+        <thead>
+          <tr>
+            <th>User Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Assigned Role</th>
+            <th>Status</th>
+            <th>Created</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block modals %}
+<!-- Add / Edit User Modal -->
+<div class="modal fade" id="userModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold" id="userModalTitle"><i class="fas fa-user-plus text-primary me-2"></i>Add User</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form id="userForm" onsubmit="saveUser(event)">
+        <input type="hidden" id="userId" name="userId">
+        <div class="modal-body">
+          <div class="row g-3">
+            <div class="col-12">
+              <label class="form-label">Full Name *</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="far fa-user"></i></span>
+                <input type="text" class="form-control" name="name" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Email Address *</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="far fa-envelope"></i></span>
+                <input type="email" class="form-control" name="email" id="userEmailField" required>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Phone Number</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                <input type="tel" class="form-control" name="phoneNumber">
+              </div>
+            </div>
+            <div class="col-12" id="passwordRow">
+              <label class="form-label">Password *</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                <input type="password" class="form-control border-end-0" name="password" id="userPasswordField">
+                <button class="password-eye-btn" type="button" onclick="CRM.togglePassword('userPasswordField', this)" title="Show/Hide Password">
+                  <i class="fas fa-eye"></i>
+                </button>
+              </div>
+              <div class="form-text">Minimum 6 characters recommended.</div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">User Role *</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-user-shield"></i></span>
+                <select class="form-select" name="role" id="userRoleSelect" required>
+                  <option value="Sales Employee" selected>Sales Employee</option>
+                  <option value="Admin">Admin</option>
+                  <option value="Super Admin">Super Admin</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Account Status</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-toggle-on"></i></span>
+                <select class="form-select" name="isActive" id="userIsActiveSelect">
+                  <option value="true" selected>Active</option>
+                  <option value="false">Deactivated</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btnSaveUser">Save User</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Reset Password Modal -->
+<div class="modal fade" id="resetPwdModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold"><i class="fas fa-key text-warning me-2"></i>Reset User Password</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <form id="resetPwdForm" onsubmit="handleResetPassword(event)">
+        <input type="hidden" id="resetUserId">
+        <div class="modal-body">
+          <p class="small text-secondary mb-3">Resetting password for: <strong id="resetUserNameDisplay" class="text-dark"></strong></p>
+          <div class="mb-3">
+            <label class="form-label">New Password *</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-lock"></i></span>
+              <input type="password" class="form-control border-end-0" id="newResetPassword" required>
+              <button class="password-eye-btn" type="button" onclick="CRM.togglePassword('newResetPassword', this)" title="Show/Hide Password">
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-warning">Update Password</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Dedicated external script for users (No inline JS) -->
+<script src="/static/js/users.js"></script>
+{% endblock %}

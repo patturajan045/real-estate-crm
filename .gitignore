@@ -1,0 +1,128 @@
+# =========================
+# Python
+# =========================
+
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Python cache
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# =========================
+# Virtual Environment
+# =========================
+
+venv/
+env/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+
+# =========================
+# Environment / Secrets
+# =========================
+
+.env
+.env.*
+!.env.example
+
+# =========================
+# Flask
+# =========================
+
+instance/
+.webassets-cache/
+
+# =========================
+# Logs
+# =========================
+
+*.log
+logs/
+
+# =========================
+# Database / Local Data
+# =========================
+
+*.db
+*.sqlite
+*.sqlite3
+
+# =========================
+# IDE / Editors
+# =========================
+
+.vscode/
+.idea/
+*.code-workspace
+
+# =========================
+# OS Files
+# =========================
+
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# =========================
+# Build / Distribution
+# =========================
+
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# =========================
+# Node / Frontend
+# =========================
+
+node_modules/
+
+# Frontend build output
+frontend/dist/
+frontend/build/
+
+# =========================
+# Temporary Files
+# =========================
+
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# =========================
+# Deployment
+# =========================
+
+# Local deployment configuration
+render.yaml.local
+
+# =========================
+# Secrets / Keys
+# =========================
+
+*.pem
+*.key
+*.crt
+
+# =========================
+# Testing
+# =========================
+
+.pytest_cache/
+.tox/
+.nox/
+
+# =========================
+# Jupyter
+# =========================
+
+.ipynb_checkpoints/

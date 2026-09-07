@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account - EstateFlow Real Estate CRM</title>
+  
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <!-- SweetAlert2 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.min.css" rel="stylesheet">
+  <!-- Custom Light Theme -->
+  <link rel="stylesheet" href="/static/css/style.css">
+
+  <style>
+    body {
+      background: linear-gradient(135deg, #f0f4f8 0%, #e2e8f0 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 1.5rem;
+    }
+    .register-container {
+      width: 100%;
+      max-width: 520px;
+    }
+    .register-card {
+      background: #ffffff;
+      border: 1px solid var(--crm-border);
+      border-radius: 1rem;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+      padding: 2.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="register-container">
+    <div class="register-card">
+      <!-- Dynamic Brand Header -->
+      <div class="text-center mb-4">
+        <div class="sidebar-brand-icon mx-auto mb-3" style="width: 52px; height: 52px; font-size: 1.6rem;">
+          <i class="fas fa-building"></i>
+        </div>
+        <h2 class="fw-bold text-dark mb-1" data-cms="register_brand_title">EstateFlow CRM</h2>
+        <p class="text-secondary small" data-cms="register_brand_subtitle">Real Estate Sales & Booking Platform</p>
+      </div>
+
+      <div class="mb-4">
+        <h4 class="fw-bold text-dark mb-1" data-cms="register_heading">Create Team Account</h4>
+        <p class="text-secondary small mb-0" data-cms="register_subheading">Join the sales and property management team</p>
+      </div>
+
+      <!-- Registration Form -->
+      <form id="registerForm" onsubmit="handleRegister(event)">
+        <div class="mb-3">
+          <label for="regName" class="form-label">Full Name *</label>
+          <div class="input-group">
+            <span class="input-group-text bg-white border-end-0 text-muted"><i class="far fa-user"></i></span>
+            <input type="text" class="form-control border-start-0 ps-0" id="regName" required>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="regEmail" class="form-label">Email Address *</label>
+          <div class="input-group">
+            <span class="input-group-text bg-white border-end-0 text-muted"><i class="far fa-envelope"></i></span>
+            <input type="email" class="form-control border-start-0 ps-0" id="regEmail" required>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="regPhone" class="form-label">Phone Number</label>
+          <div class="input-group">
+            <span class="input-group-text bg-white border-end-0 text-muted"><i class="fas fa-phone"></i></span>
+            <input type="tel" class="form-control border-start-0 ps-0" id="regPhone">
+          </div>
+        </div>
+
+        <div class="row g-2 mb-4">
+          <div class="col-md-6">
+            <label for="regPassword" class="form-label">Password *</label>
+            <div class="input-group">
+              <span class="input-group-text bg-white border-end-0 text-muted"><i class="fas fa-lock"></i></span>
+              <input type="password" class="form-control border-start-0 border-end-0 ps-0" id="regPassword" required>
+              <button class="password-eye-btn" type="button" onclick="CRM.togglePassword('regPassword', this)" title="Show/Hide Password">
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label for="regConfirmPassword" class="form-label">Confirm Password *</label>
+            <div class="input-group">
+              <span class="input-group-text bg-white border-end-0 text-muted"><i class="fas fa-check-double"></i></span>
+              <input type="password" class="form-control border-start-0 border-end-0 ps-0" id="regConfirmPassword" required>
+              <button class="password-eye-btn" type="button" onclick="CRM.togglePassword('regConfirmPassword', this)" title="Show/Hide Password">
+                <i class="fas fa-eye"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold mb-3" id="registerSubmitBtn">
+          <span id="regBtnText">Create Account</span>
+          <span id="regBtnSpinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status"></span>
+        </button>
+
+        <div class="text-center">
+          <span class="text-secondary small">Already registered?</span>
+          <a href="/login" class="small fw-semibold text-primary text-decoration-none ms-1">Sign in here</a>
+        </div>
+      </form>
+    </div>
+
+    <div class="text-center mt-3 text-secondary small" data-cms="register_footer_text">
+      Role permissions will be verified according to administrative policy.
+    </div>
+  </div>
+
+  <!-- SweetAlert2 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.10.5/dist/sweetalert2.all.min.js"></script>
+  <!-- CRM Core App JS -->
+  <script src="/static/js/crm-app.js"></script>
+  <!-- Dedicated Auth JS -->
+  <script src="/static/js/auth.js"></script>
+</body>
+</html>
