@@ -1,4 +1,4 @@
-# EstateFlow - Real Estate CRM Application
+# Real Estate CRM Application
 
 A professional, modular Real Estate CRM built with **Python Flask**, **MongoDB (MongoEngine)**, **JWT Authentication**, and a clean light-themed frontend utilizing **Bootstrap 5**, **jQuery DataTables**, and **SweetAlert2**.
 
